@@ -1,13 +1,23 @@
 import React from 'react';
 
+import { StyledButton } from '../styled-components';
+
 const RemoveButton = (props) => {
     const {
         onRemove,
-        id
+        id,
+        backgroundColor,
+        hoverColor
     } = props;
 
     return (
-        <button id={id} onClick={onRemove}>Remove</button>
+        <StyledButton
+            className="removeButton"
+            backgroundColor={backgroundColor}
+            hoverColor={hoverColor}
+            id={id}
+            onClick={onRemove}>{props.children}
+        </StyledButton>
     )
 };
 

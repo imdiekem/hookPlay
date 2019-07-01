@@ -4,6 +4,14 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import WebFont from "webfontloader";
+
+WebFont.load({
+  google: {
+    families: ["Nunito:400,700", "sans-serif"]
+  }
+});
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

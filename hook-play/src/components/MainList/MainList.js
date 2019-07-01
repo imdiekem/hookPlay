@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { StyledMainList } from './styled-components';
+
+import { StyledButton } from '../UI/styled-components';
 
 import RemoveButton from '../UI/RemoveButton';
 
@@ -53,19 +56,28 @@ const MainList = () => {
             return (
             <div key={item.listItemValue + idx}>
                 <div>{item.listItemValue}</div>
-                <RemoveButton id={item.listItemId} onRemove={removeListItem}>Remove</RemoveButton>
+                <RemoveButton
+                    hoverColor="#d44141"
+                    backgroundColor="#ff6666"
+                    id={item.listItemId}
+                    onRemove={removeListItem}
+                >
+                    Remove
+                </RemoveButton>
             </div>
             )
         });
     };
 
     return (
-        <>
+        <StyledMainList>
             <h1>Joke Subjects</h1>
             {renderList(list)}
-            <input onChange={updateNewListItem} value={newListItem} />
-            <button onClick={addItem}>Add Item</button>
-        </>
+            <div className="addItem">
+                <input onChange={updateNewListItem} value={newListItem} />
+                <StyledButton className="addButton" onClick={addItem}>Add</StyledButton>
+            </div>
+        </StyledMainList>
     );
 };
 
