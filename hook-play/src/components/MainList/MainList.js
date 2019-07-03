@@ -1,27 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyledMainList } from './styled-components';
+import axios from 'axios';
 
 import { StyledButton } from '../UI/styled-components';
 
 import RemoveButton from '../UI/RemoveButton';
+import Input from '../UI/Input';
 
 const MainList = () => {
-    const [list, updateList] = useState(
-        [
-            {
-                listItemValue: "light bulb",
-                listItemId: "light bulb",
-                listItemChecked: false
-            },
-            {
-                listItemValue: "bar",
-                listItemId: "bar",
-                listItemChecked: false
-            }
-        ]
-    );
+    const [list, updateList] = useState([]);
 
     const [newListItem, updateListItem] = useState('');
+
+    useEffect(() => {
+        getList();
+    }, [list]);
+
+    const getList = () => {
+        axios.get('https://joke-subjects.firebaseio.com/list.json')
+        .then(result => {
+            updateList(result.data)
+        })
+        .catch(err => err);
+    }
 
     const updateNewListItem = (e) => {
         const targetValue = e.target.value;
@@ -57,8 +58,8 @@ const MainList = () => {
             <div key={item.listItemValue + idx}>
                 <div>{item.listItemValue}</div>
                 <RemoveButton
-                    hoverColor="#d44141"
-                    backgroundColor="#ff6666"
+                    hoverColor="none"
+                    backgroundColor="none"
                     id={item.listItemId}
                     onRemove={removeListItem}
                 >
@@ -74,8 +75,16 @@ const MainList = () => {
             <h1>Joke Subjects</h1>
             {renderList(list)}
             <div className="addItem">
-                <input onChange={updateNewListItem} value={newListItem} />
-                <StyledButton className="addButton" onClick={addItem}>Add</StyledButton>
+                <h2>Add a Joke Subject to the List</h2>
+                <Input onChange={updateNewListItem} value={newListItem} />
+                <StyledButton
+                    className="addButton"
+                    onClick={addItem}
+                    backgroundColor="#34bbbb"
+                    hoverColor="#23a9af"
+                >
+                    Add
+                </StyledButton>
             </div>
         </StyledMainList>
     );

@@ -8,7 +8,7 @@ import WebFont from "webfontloader";
 
 WebFont.load({
   google: {
-    families: ["Nunito:400,700", "sans-serif"]
+    families: ["Nunito:400,700", "Roboto+Slab:400,700", "sans-serif"]
   }
 });
 
