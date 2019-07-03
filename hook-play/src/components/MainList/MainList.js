@@ -12,6 +12,7 @@ const MainList = () => {
 
     const [newListItem, updateListItem] = useState('');
 
+    // WIP
     useEffect(() => {
         getList();
     }, [list]);
