@@ -8,21 +8,22 @@ import RemoveButton from '../UI/RemoveButton';
 import Input from '../UI/Input';
 
 const MainList = () => {
-    const [list, updateList] = useState([]);
+    const [list, updateList] = useState({});
 
     const [newListItem, updateListItem] = useState('');
 
-    // WIP
     useEffect(() => {
         getList();
-    }, [list]);
+    }, []);
 
     const getList = () => {
         axios.get('https://joke-subjects.firebaseio.com/list.json')
         .then(result => {
-            updateList(result.data)
+            let newList = { ...list };
+            newList = { ...list, ...result.data };
+            updateList(newList);
         })
-        .catch(err => err);
+        .catch(err => console.log(err));
     }
 
     const updateNewListItem = (e) => {
@@ -32,41 +33,52 @@ const MainList = () => {
     };
 
     const removeListItem = (e) => {
-        const targetValue = e.target.id;
-        let newListState = [ ...list ];
-        newListState = newListState.filter(item => item.listItemId !== targetValue);
-
-        updateList(newListState);
+        const targetId = e.target.id;
+        axios.delete(`https://joke-subjects.firebaseio.com/list/${targetId}.json`)
+        .then(result => {
+            const newList = { ...list };
+            delete newList[targetId];
+            updateList(newList);
+        })
+        .catch(err => console.log(err));
     }
 
     const addItem = () => {
-        let newListState = [ ...list ];
-
         const newListObject = {
             listItemValue: newListItem,
             listItemId: newListItem,
             listItemChecked: false
         }
 
-        newListState = newListState.concat(newListObject);
+        axios.post('https://joke-subjects.firebaseio.com/list.json', newListObject)
+        .then(result => {
+            let {
+                name
+            } = result.data;
 
-        updateList(newListState);
+            let newList = { ...list };
+
+            newList[name] = newListObject;
+
+            updateList(newList);
+        })
+        .catch(err => console.log(err));
     }
 
     const renderList = (list) => {
-        return list.map((item, idx) => {
+        return Object.keys(list).map((key) => {
             return (
-            <div key={item.listItemValue + idx}>
-                <div>{item.listItemValue}</div>
-                <RemoveButton
-                    hoverColor="none"
-                    backgroundColor="none"
-                    id={item.listItemId}
-                    onRemove={removeListItem}
-                >
-                    Remove
-                </RemoveButton>
-            </div>
+                <div key={key}>
+                    <div>{list[key].listItemValue}</div>
+                    <RemoveButton
+                        hoverColor="none"
+                        backgroundColor="none"
+                        id={key}
+                        onRemove={removeListItem}
+                    >
+                        Remove
+                    </RemoveButton>
+                </div>
             )
         });
     };

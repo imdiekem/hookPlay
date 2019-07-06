@@ -6,6 +6,7 @@ export const StyledMainList = styled.div`
     margin: 20px auto 0;
     background: #ffe4e1;
     padding: 30px 0 50px;
+    border: 1px solid #f9dfdc;
 
     > div:not(:last-of-type) {
         border-bottom: 1px solid #f7d1cc;
@@ -36,6 +37,7 @@ export const StyledMainList = styled.div`
         margin-right: 10px;
         flex-grow: 2;
         align-self: center;
+        text-transform: capitalize;
     }
 
     div > input {
@@ -53,10 +55,10 @@ export const StyledMainList = styled.div`
     }
 
     div > .removeButton {
-        color: #cc857d;
+        color: #e07d71;
         
         :hover {
-            color: #9c574f;
+            color: #bd685e;
         }
     }
 
